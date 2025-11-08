@@ -1,24 +1,26 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useAuth } from "./contexts/AuthProvider";
 
 export default function HomePage() {
   const router = useRouter();
-  const [user, setUser] = useState(null); // Simula login 
+  const { user, isAuthenticated, logout } = useAuth();
 
-  const handleLogin = () => {
-    setUser({ name: "Gregorio" });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
+  // 🔹 Maneja la navegación: si no hay sesión, manda al login
+  const handleProtectedNavigation = (path) => {
+    if (isAuthenticated) {
+      router.push(path);
+    } else {
+      router.push("/login");
+    }
   };
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('https://wallpapers.com/images/hd/star-wars-space-background-1920-x-1080-dmwx6r9suhtxj7hv.jpg')",
+        backgroundImage:
+          "url('https://wallpapers.com/images/hd/star-wars-space-background-1920-x-1080-dmwx6r9suhtxj7hv.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         color: "#fff",
@@ -43,6 +45,7 @@ export default function HomePage() {
       >
         🌌 Mundo Star Wars
       </h1>
+
       <p
         style={{
           fontSize: "1.2rem",
@@ -57,50 +60,50 @@ export default function HomePage() {
       </p>
 
       {/* BOTONES DE ACCIÓN */}
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          marginBottom: "2rem",
+        }}
+      >
         <button
-          onClick={() => router.push("/batalla")}
+          onClick={() => handleProtectedNavigation("/batalla")}
           style={buttonStyle("#E53935")}
         >
           ⚔️ Batalla en grupo
         </button>
         <button
-          onClick={() => router.push("/trivia")}
+          onClick={() => handleProtectedNavigation("/trivia")}
           style={buttonStyle("#43A047")}
         >
           🧩 Trivia
         </button>
         <button
-          onClick={() => router.push("/wiki")}
+          onClick={() => handleProtectedNavigation("/wiki")}
           style={buttonStyle("#1E88E5")}
         >
           📚 Wiki
         </button>
       </div>
 
-      {/* LOGIN SIMPLIFICADO */}
-      <div style={{ marginTop: "3rem" }}>
-        {!user ? (
-          <button
-            onClick={handleLogin}
-            style={buttonStyle("#FFC107")}
-          >
-            Iniciar sesión
+      {/* SESIÓN */}
+      {!isAuthenticated ? (
+        <button onClick={() => router.push("/login")} style={buttonStyle("#FFC107")}>
+          🚀 Iniciar sesión
+        </button>
+      ) : (
+        <div style={{ marginTop: "1rem" }}>
+          <p style={{ marginBottom: "1rem", color: "#FFE81F" }}>
+            Bienvenido/a, {user?.name || user?.email} ✨
+          </p>
+          <button onClick={logout} style={buttonStyle("#757575")}>
+            Cerrar sesión
           </button>
-        ) : (
-          <>
-            <p style={{ marginBottom: "1rem", color: "#FFE81F" }}>
-              Bienvenido/a, {user.name} ✨
-            </p>
-            <button
-              onClick={handleLogout}
-              style={buttonStyle("#757575")}
-            >
-              Cerrar sesión
-            </button>
-          </>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <footer

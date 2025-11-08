@@ -1,0 +1,189 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("https://wallpapers.com/images/hd/star-wars-space-background-1920-x-1080-dmwx6r9suhtxj7hv.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+
+.auth-box {
+  background: rgba(10, 10, 20, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  color: #ccc;
+  font-weight: 600;
+  padding: 12px 0;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.3s;
+}
+
+.tab-btn.active {
+  color: #ffe81f;
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 8px;
+  background: rgba(255, 232, 31, 0.2);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.tab-indicator.right {
+  transform: translateX(100%);
+}
+
+.auth-title {
+  font-size: 28px;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #ffe81f;
+}
+
+.auth-subtitle {
+  text-align: center;
+  font-size: 15px;
+  color: #ddd;
+  margin-bottom: 36px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.form-input:focus {
+  border-color: #ffe81f;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #ccc;
+  margin-top: -8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-label input {
+  accent-color: #ffe81f;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: #ffe81f;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.auth-btn {
+  background: linear-gradient(135deg, #ffe81f, #f7c600);
+  border: none;
+  color: #000;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 6px;
+}
+
+.auth-btn:hover {
+  background: linear-gradient(135deg, #fff178, #ffe81f);
+  transform: translateY(-2px);
+}
+
+.toggle-text {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.toggle-link {
+  background: none;
+  border: none;
+  color: #ffe81f;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.toggle-link:hover {
+  text-decoration: underline;
+}
