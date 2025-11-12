@@ -97,8 +97,31 @@ export default function HomePage() {
       ) : (
         <div style={{ marginTop: "1rem" }}>
           <p style={{ marginBottom: "1rem", color: "#FFE81F" }}>
-            Bienvenido/a, {user?.name || user?.email} ✨
+            Bienvenido/a, {user?.username || user?.email} ✨
           </p>
+
+          {/* 🔹 BOTÓN ADMIN SOLO PARA ADMINISTRADORES */}
+          {user?.admin && (
+            <button
+              onClick={() => router.push("/users")}
+              style={{
+                background: "#1976D2",
+                color: "white",
+                border: "none",
+                borderRadius: 8,
+                padding: "10px 16px",
+                marginBottom: "10px",
+                cursor: "pointer",
+                fontWeight: "bold",
+                boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                textShadow: "1px 1px 2px #000",
+              }}
+            >
+              🧑‍💻 Administrar Usuarios
+            </button>
+          )}
+
+          <br />
           <button onClick={logout} style={buttonStyle("#757575")}>
             Cerrar sesión
           </button>

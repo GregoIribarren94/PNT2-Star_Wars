@@ -6,14 +6,43 @@ import { useAuth } from "../contexts/AuthProvider";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const { login } = useAuth();
 
+  // 🔹 Función para registrar nuevo usuario
+  const register = async ({ name, email, password }) => {
+    try {
+      const res = await fetch("https://690b87c26ad3beba00f55bf7.mockapi.io/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          email,
+          password,
+          admin: false, // por defecto
+        }),
+      });
+
+      if (!res.ok) throw new Error("Error al registrar usuario");
+
+      alert("✅ Usuario registrado correctamente");
+      setIsLogin(true); // vuelve al modo login
+    } catch (err) {
+      alert("❌ No se pudo registrar el usuario");
+      console.error(err);
+    }
+  };
+
+  // 🔹 Submit: login o registro
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email, password });
+    if (isLogin) {
+      login({ email, password });
+    } else {
+      register({ name, email, password });
+    }
   };
 
   return (
@@ -51,6 +80,8 @@ export default function AuthForm() {
               <input
                 type="text"
                 id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="form-input"
                 placeholder="Luke Skywalker"
                 required
@@ -89,7 +120,6 @@ export default function AuthForm() {
               <label className="checkbox-label">
                 <input type="checkbox" /> Recordarme
               </label>
-            
             </div>
           )}
 
