@@ -7,10 +7,26 @@ export default function EditTriviaPage() {
   const router = useRouter();
   const { id } = useParams();
   const { questions, updateQuestion } = useTrivia();
+
   const q = questions.find((q) => q.id == id);
 
+  // 🧹 Estado del formulario
   const [form, setForm] = useState(
-    q || { text: "", options: [], correctAnswer: "" }
+    q
+      ? {
+          ...q,
+          options: q.options.map((o) => o.trim()),
+        }
+      : {
+          text: "",
+          options: [],
+          correctAnswer: "",
+        }
+  );
+
+  // 🧹 Estado separado SOLO para escribir en el textarea sin que se rompa
+  const [textAreaValue, setTextAreaValue] = useState(
+    q ? q.options.join(", ") : ""
   );
 
   useEffect(() => {
@@ -19,7 +35,21 @@ export default function EditTriviaPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateQuestion(q.id, form);
+
+    // Convertimos el texto del textarea → array limpio
+    const cleanOptions = textAreaValue
+      .split(",")
+      .map((o) => o.trim())
+      .filter((o) => o.length > 0);
+
+    const cleanForm = {
+      ...form,
+      options: cleanOptions,
+      correctAnswer: form.correctAnswer.trim(),
+    };
+
+    updateQuestion(q.id, cleanForm);
+
     router.push("/trivia");
   };
 
@@ -56,7 +86,7 @@ export default function EditTriviaPage() {
           boxShadow: "0 0 15px rgba(255, 232, 31, 0.2)",
         }}
       >
-        {/* TEXT */}
+        {/* TEXTO */}
         <label style={{ display: "block", marginBottom: 10, color: "#ffe81f" }}>
           Texto de la pregunta:
         </label>
@@ -74,15 +104,16 @@ export default function EditTriviaPage() {
           }}
         />
 
-        {/* OPTIONS */}
+        {/* OPCIONES */}
         <label style={{ display: "block", marginBottom: 10, color: "#ffe81f" }}>
           Opciones (separadas por coma):
         </label>
+
         <textarea
-          value={form.options.join(", ")}
-          onChange={(e) =>
-            setForm({ ...form, options: e.target.value.split(",") })
-          }
+          value={textAreaValue} // ← editable libremente
+          onChange={(e) => {
+            setTextAreaValue(e.target.value); // ← NO reconvierte mientras escribís
+          }}
           rows={3}
           style={{
             width: "100%",
@@ -95,11 +126,12 @@ export default function EditTriviaPage() {
           }}
         />
 
-        {/* CORRECT ANSWER */}
+        {/* RESPUESTA CORRECTA */}
         <label style={{ display: "block", marginBottom: 10, color: "#ffe81f" }}>
           Respuesta correcta:
         </label>
-        <input
+
+        <select
           value={form.correctAnswer}
           onChange={(e) =>
             setForm({ ...form, correctAnswer: e.target.value })
@@ -113,9 +145,22 @@ export default function EditTriviaPage() {
             color: "#ffe81f",
             marginBottom: 30,
           }}
-        />
+        >
+          <option value="">Seleccioná una opción</option>
 
-        {/* BUTTON */}
+          {/* opciones convertidas recién al guardar */}
+          {textAreaValue
+            .split(",")
+            .map((o) => o.trim())
+            .filter((o) => o.length > 0)
+            .map((opt, i) => (
+              <option key={i} value={opt}>
+                {opt}
+              </option>
+            ))}
+        </select>
+
+        {/* BOTÓN */}
         <button
           style={{
             width: "100%",
@@ -129,8 +174,12 @@ export default function EditTriviaPage() {
             boxShadow: "0 0 10px #ffe81f",
             transition: "transform 0.2s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform = "scale(1.05)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
         >
           💾 Guardar cambios
         </button>
