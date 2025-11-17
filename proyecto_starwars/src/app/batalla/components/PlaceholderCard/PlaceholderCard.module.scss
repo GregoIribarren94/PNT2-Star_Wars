@@ -1,0 +1,21 @@
+.placeholder {
+  width: 150px;
+  height: 200px;
+  border: 2px dashed #666;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(99, 99, 99, 0.3);
+  color: #999;
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  font-size: 0.8rem;
+}
