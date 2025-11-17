@@ -8,7 +8,7 @@ import Card from '../components/Card/Card';
 import PlaceholderCardsSection from '../components/PlaceholderCardsSection/PlaceholderCardsSection'; 
 
 const API_TEAM_URL = 'https://691a9b0d2d8d7855756f63ee.mockapi.io/team';
-const API_CHARACTERS_URL = 'https://swapi.dev/api/people/'; 
+const API_CHARACTERS_URL = 'https://swapi.info/api/people'; 
  
 export default function AddTeamPage() {
   const router = useRouter();

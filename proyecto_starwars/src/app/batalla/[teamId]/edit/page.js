@@ -166,6 +166,8 @@ export default function EditTeamPage() {
           
           return (
             <Card
+                peso={p.mass}
+                altura={p.height}
               key={id}
               name={p.name}
               image={image}

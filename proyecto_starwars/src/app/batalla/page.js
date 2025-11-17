@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 // Asume que esta es la ruta correcta de tu hook:
 import { useAuth } from '../contexts/AuthProvider.jsx'; 
 
-const API_URL = 'https://691a9b0d2d8d7855756f63ee.mockapi.io/team'; 
+const TEAMS_API_URL = 'https://691a9b0d2d8d7855756f63ee.mockapi.io/team'; 
 
 export default function TeamsPage() {
   const router = useRouter();
   
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, authLoading, isAuthenticated, logout } = useAuth();
 
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
@@ -39,7 +39,7 @@ export default function TeamsPage() {
     
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}?user_email=${userEmail}`); 
+      const response = await fetch(`${TEAMS_API_URL}?user_email=${userEmail}`); 
       if (!response.ok && response.status != 404) throw new Error('Failed to fetch teams');
       
       const data = (response.status === 404) ? [] : await response.json();
@@ -56,7 +56,7 @@ export default function TeamsPage() {
     if (!confirm('¿Estás seguro de eliminar este equipo? Esta acción es irreversible.')) return;
     
     try {
-      const response = await fetch(`${API_URL}/${teamId}`, { method: 'DELETE' });
+      const response = await fetch(`${TEAMS_API_URL}/${teamId}`, { method: 'DELETE' });
       if (!response.ok) throw new Error('Failed to delete team');
 
       setTeams(teams.filter(t => t.id !== teamId));
@@ -73,11 +73,13 @@ export default function TeamsPage() {
 
   function handleBattle() {
     if (!selectedTeam) {
-      alert('Selecciona un equipo primero');
+      alert('¡Selecciona un equipo primero para iniciar la batalla!');
       return;
     }
+    console.log('Iniciar batalla con equipo:', selectedTeam);
+    alert(`Iniciando batalla con el equipo: ${selectedTeam.name}`);
     router.push(`/batalla/${selectedTeam.id}/battle`);
-   }
+  }
 
   function handleModify() {
     if (!selectedTeam) {
@@ -87,14 +89,17 @@ export default function TeamsPage() {
     router.push(`/batalla/${selectedTeam.id}/edit`);
   }
   
+  if (authLoading) { 
+    return <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.25rem', color: '#FFD700' }}>Verificando sesión...</div>;
+}
 
-    if (!isAuthenticated && !user) {
-        return <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.25rem', color: '#FFD700' }}>Redirigiendo a Login...</div>;
-    }
+if (!isAuthenticated && !user) {
+    return <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.25rem', color: '#FFD700' }}>Redirigiendo a Login...</div>;
+}
 
-    if (loading) {
-        return <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.25rem', color: '#4CAF50' }}>Cargando equipos...</div>;
-    }
+if (loading) {
+    return <div style={{ padding: '2rem', textAlign: 'center', fontSize: '1.25rem', color: '#4CAF50' }}>Cargando equipos...</div>;
+}
 
   const displayEmail = user?.email || 'Invitado';
 
