@@ -4,9 +4,8 @@ import { useAuth } from "./contexts/AuthProvider";
 
 export default function HomePage() {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, loginDirect } = useAuth();
 
-  // 🔹 Maneja la navegación: si no hay sesión, manda al login
   const handleProtectedNavigation = (path) => {
     if (isAuthenticated) {
       router.push(path);
@@ -32,7 +31,6 @@ export default function HomePage() {
         padding: "2rem",
       }}
     >
-      {/* LOGO Y TÍTULO */}
       <h1
         style={{
           fontSize: "3rem",
@@ -91,16 +89,39 @@ export default function HomePage() {
 
       {/* SESIÓN */}
       {!isAuthenticated ? (
-        <button onClick={() => router.push("/login")} style={buttonStyle("#FFC107")}>
-          🚀 Iniciar sesión
-        </button>
+        <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+          <button
+            onClick={() =>
+              loginDirect({
+                email: "gina@ort.com",
+                username: "gina123",
+                admin: true,
+              })
+            }
+            style={buttonStyle("#1976D2")}
+          >
+            🧑‍💻 Entrar como Admin
+          </button>
+
+          <button
+            onClick={() =>
+              loginDirect({
+                email: "grego@ort.com",
+                username: "grego123",
+                admin: false,
+              })
+            }
+            style={buttonStyle("#43A047")}
+          >
+            👤 Entrar como Usuario
+          </button>
+        </div>
       ) : (
         <div style={{ marginTop: "1rem" }}>
           <p style={{ marginBottom: "1rem", color: "#FFE81F" }}>
             Bienvenido/a, {user?.username || user?.email} ✨
           </p>
 
-          {/* 🔹 BOTÓN ADMIN SOLO PARA ADMINISTRADORES */}
           {user?.admin && (
             <button
               onClick={() => router.push("/users")}
