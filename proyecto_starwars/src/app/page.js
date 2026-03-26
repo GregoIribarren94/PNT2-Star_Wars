@@ -137,8 +137,8 @@ export default function HomePage() {
           textShadow: "1px 1px 2px #000",
         }}
       >
-        <p>TP Programación con Nuevas Tecnologías II – ORT</p>
-        <p>Hecho con ❤️ por Alen, Federico, Gregorio y Gina</p>
+        <p>Proyecto desarrollado como parte de mi formación en desarrollo de software</p>
+        <p>Portfolio personal de Gregorio Iribarren</p>
       </footer>
     </main>
   );

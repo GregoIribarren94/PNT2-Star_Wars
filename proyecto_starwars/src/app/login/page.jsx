@@ -11,6 +11,21 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
 
+  // 🔹 LOGIN DEMO (ADMIN / USER)
+  const loginDemo = (type) => {
+    if (type === "admin") {
+      login({
+        email: "gina@ort.com",
+        password: "password",
+      });
+    } else {
+      login({
+        email: "grego@ort.com",
+        password: "password",
+      });
+    }
+  };
+
   // 🔹 Función para registrar nuevo usuario
   const register = async ({ name, email, password }) => {
     try {
@@ -21,14 +36,14 @@ export default function AuthForm() {
           username: name,
           email,
           password,
-          admin: false, // por defecto
+          admin: false,
         }),
       });
 
       if (!res.ok) throw new Error("Error al registrar usuario");
 
       alert("✅ Usuario registrado correctamente");
-      setIsLogin(true); // vuelve al modo login
+      setIsLogin(true);
     } catch (err) {
       alert("❌ No se pudo registrar el usuario");
       console.error(err);
@@ -67,11 +82,41 @@ export default function AuthForm() {
         <h1 className="auth-title">
           {isLogin ? "Bienvenido/a" : "Unite a la galaxia"}
         </h1>
+
         <p className="auth-subtitle">
           {isLogin
             ? "Ingresá tus credenciales para continuar"
             : "Completá tus datos para crear tu cuenta"}
         </p>
+
+        {/* 🔥 BOTONES DEMO */}
+        {isLogin && (
+          <>
+            <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+              <button
+                type="button"
+                onClick={() => loginDemo("admin")}
+                className="auth-btn"
+                style={{ backgroundColor: "#1976D2" }}
+              >
+                🧑‍💻 Entrar como Admin
+              </button>
+
+              <button
+                type="button"
+                onClick={() => loginDemo("user")}
+                className="auth-btn"
+                style={{ backgroundColor: "#43A047" }}
+              >
+                👤 Entrar como Usuario
+              </button>
+            </div>
+
+            <p style={{ fontSize: "0.8rem", opacity: 0.7, marginBottom: "15px" }}>
+              Modo demo: acceso rápido para probar la aplicación
+            </p>
+          </>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
